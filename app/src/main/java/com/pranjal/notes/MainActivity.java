@@ -21,16 +21,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     NoteViewModel noteViewModel;
     RecyclerView recyclerView;
+
+    Animation animation;
 
     ActivityResultLauncher<Intent> activityResultLauncherForUpdateNote;
     ActivityResultLauncher<Intent> activityResultLauncherForAddNote;
@@ -44,12 +50,16 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        animation = AnimationUtils.loadAnimation(this,R.anim.card_anim);
+
 //        registerActivityForUpdateNote();
+
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         NoteAdapter noteAdapter = new NoteAdapter();
         recyclerView.setAdapter(noteAdapter);
+        recyclerView.setAnimation(animation);
 
         noteViewModel = new ViewModelProvider.AndroidViewModelFactory(getApplication())
                 .create(NoteViewModel.class);
@@ -73,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
                 return false;
             }
+
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
@@ -100,9 +111,9 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("title",note.getTitle());
                 intent.putExtra("description",note.getDescription());
                 intent.putExtra("id",note.getId());
+                intent.putExtra("date",note.getDate());
                 setResult(RESULT_OK);
                 startActivityForResult(intent,2);
-
 
             }
         });
@@ -168,21 +179,23 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        String title,description;
+        String title,description,date;
         if(requestCode == 1 && resultCode == RESULT_OK && data !=  null){
             title = data.getStringExtra("title");
             description = data.getStringExtra("description");
+            date = data.getStringExtra("date");
 
-            Note note = new Note(title,description);
+            Note note = new Note(title,description,date);
             noteViewModel.insert(note);
         }
 
         if(requestCode == 2 && resultCode == RESULT_OK && data !=  null){
             title = data.getStringExtra("titleLast");
             description = data.getStringExtra("descriptionLast");
+            date = data.getStringExtra("date");
             int id = data.getIntExtra("id",-1);
 
-            Note note = new Note(title,description);
+            Note note = new Note(title,description,date);
             note.setId(id);
             noteViewModel.update(note);
         }

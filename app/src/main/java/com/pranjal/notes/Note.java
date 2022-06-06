@@ -13,16 +13,22 @@ public class Note {
 
     public String description;
 
+    public String date;
 
-    public Note(String title,String description){
+
+    public Note(String title,String description, String date){
         this.title = title;
         this.description = description;
+        this.date = date;
     }
 
     public int getId(){
         return id;
     }
 
+    public String getDate(){
+        return date;
+    }
 
     public String getTitle(){
         return title;

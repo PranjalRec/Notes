@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class UpdateActivity extends AppCompatActivity {
 
 
@@ -17,7 +20,7 @@ public class UpdateActivity extends AppCompatActivity {
     EditText editTextDescription;
     Button buttonCancel, buttonSave;
 
-    String title,description;
+    String title,description,date;
     int id;
 
 
@@ -38,6 +41,11 @@ public class UpdateActivity extends AppCompatActivity {
 
         editTextTitle.setText(title);
         editTextDescription.setText(description);
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd");
+        String date = simpleDateFormat.format(cal.getTime());
+
 
 
 
@@ -62,6 +70,7 @@ public class UpdateActivity extends AppCompatActivity {
 
                 intent1.putExtra("titleLast",titleLast);
                 intent1.putExtra("descriptionLast",descriptionLast);
+                intent1.putExtra("date",date);
 
                 if(id != -1){
                     intent1.putExtra("id",id);

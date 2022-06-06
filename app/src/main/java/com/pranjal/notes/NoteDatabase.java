@@ -8,6 +8,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -17,6 +19,9 @@ public abstract class NoteDatabase extends RoomDatabase {
     public static NoteDatabase instance;
 
     public abstract NoteDao noteDao();
+
+
+
 
     public static synchronized NoteDatabase getInstance(Context context){
 
@@ -40,11 +45,17 @@ public abstract class NoteDatabase extends RoomDatabase {
             executorService.execute(new Runnable() {
                 @Override
                 public void run() {
-                    noteDao.insert(new Note("title 1","description 1"));
-                    noteDao.insert(new Note("title 2","description 2"));
-                    noteDao.insert(new Note("title 3","description 3"));
-                    noteDao.insert(new Note("title 4","description 4"));
-                    noteDao.insert(new Note("title 5","description 5"));
+
+                    Calendar cal = Calendar.getInstance();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd");
+                    String date = simpleDateFormat.format(cal.getTime());
+
+
+                    noteDao.insert(new Note("title 1","description 1",date));
+                    noteDao.insert(new Note("title 2","description 2",date));
+                    noteDao.insert(new Note("title 3","description 3",date));
+                    noteDao.insert(new Note("title 4","description 4",date));
+                    noteDao.insert(new Note("title 5","description 5",date));
                 }
             });
         }

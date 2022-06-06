@@ -8,11 +8,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class AddNote extends AppCompatActivity {
 
     EditText editTextTitle;
     EditText editTextDescription;
     Button buttonCancel,buttonSave;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +48,14 @@ public class AddNote extends AppCompatActivity {
         String title = editTextTitle.getText().toString();
         String description = editTextDescription.getText().toString();
 
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd");
+        String date = simpleDateFormat.format(cal.getTime());
+
         Intent i = new Intent();
         i.putExtra("title",title);
         i.putExtra("description",description);
+        i.putExtra("date",date);
         setResult(RESULT_OK,i);
         finish();
     }
